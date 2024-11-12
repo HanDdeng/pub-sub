@@ -1,5 +1,5 @@
 {
-  "name": "pub-sub",
+  "name": "hd-pub-sub",
   "version": "1.0.0",
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
