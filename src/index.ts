@@ -4,7 +4,7 @@ const createPubSub = <T extends BasePubSub>() => {
   const events: Partial<Record<keyof T, T[keyof T][]>> = {}; // 存储所有的事件及其对应的回调函数
 
   // 订阅事件
-  const subscribe = (event: keyof T, listener: T[keyof T]) => {
+  const subscribe = <K extends keyof T>(event: K, listener: T[K]) => {
     // 如果事件不存在，创建一个空数组
     if (!events[event]) {
       events[event] = [];
@@ -25,7 +25,7 @@ const createPubSub = <T extends BasePubSub>() => {
    * @param event -非空时删除该事件全部监听器，不存在时全部监听器
    * @param listener -非空时删除指定监听器，不存在时删除该事件全部监听器
    */
-  const unsubscribe = (event?: keyof T, listener?: T[keyof T]) => {
+  const unsubscribe = <K extends keyof T>(event?: K, listener?: T[K]) => {
     if (!event) {
       // 如果未传入事件名称，则清空所有事件的监听器
       for (const key in events) {
@@ -50,7 +50,10 @@ const createPubSub = <T extends BasePubSub>() => {
   };
 
   // 发布事件
-  const publish = async (event: keyof T, ...args: Parameters<T[keyof T]>) => {
+  const publish = async <K extends keyof T>(
+    event: K,
+    ...args: Parameters<T[K]>
+  ) => {
     // 如果事件没有订阅者，直接返回
     if (!events[event]) return;
 
