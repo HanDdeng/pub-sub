@@ -12,33 +12,39 @@ export default defineConfig({
     {
       dir: "./dist/cjs",
       format: "cjs",
-      sourcemap: true,
-      entryFileNames: "[name].cjs",
-      chunkFileNames: "[name]-[hash].cjs",
+      sourcemap: false
+      // entryFileNames: "[name].cjs",
+      // chunkFileNames: "[name]-[hash].cjs"
     },
 
     {
       dir: "./dist/esm",
-      sourcemap: true,
-      entryFileNames: "[name].js",
-      chunkFileNames: "[name]-[hash].js",
+      sourcemap: false
+      // entryFileNames: "[name].js",
+      // chunkFileNames: "[name]-[hash].js"
     },
+    {
+      file: "./dist/index.min.js",
+      format: "umd",
+      name: "hd-pub-sub", // UMD全局变量名
+      plugins: [terser()],
+      sourcemap: true
+    }
   ],
   plugins: [
     typescript({
       tsconfig: "./tsconfig.json",
       outDir: undefined,
-      emitDeclarationOnly: false,
       declaration: false,
       declarationMap: false,
-      declarationDir: undefined,
+      declarationDir: undefined
     }),
-    terser(),
+    // terser(),
     clear({
       targets: ["dist"],
-      watch: true,
+      watch: true
     }),
     resolve(),
-    commonjs(),
-  ],
+    commonjs()
+  ]
 });
