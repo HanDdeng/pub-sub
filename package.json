@@ -15,7 +15,10 @@
   "scripts": {
     "build": "rollup -c && tsc"
   },
-  "repository": "https://github.com/HanDdeng/pub-sub",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HanDdeng/pub-sub.git"
+  },
   "author": "HanDdeng",
   "license": "MIT",
   "devDependencies": {
