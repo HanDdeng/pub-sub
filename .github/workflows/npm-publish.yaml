@@ -34,6 +34,8 @@ jobs:
         run: yarn build # 根据项目情况配置，如果不需要可以移除
 
       - name: Publish to npm
-        # env:
-        #   NODE_AUTH_TOKEN: ${{ github.token }}
-        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: 
+          echo "NODE_AUTH_TOKEN=${NODE_AUTH_TOKEN}"
+          npm publish
