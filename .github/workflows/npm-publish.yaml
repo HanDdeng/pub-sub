@@ -7,10 +7,6 @@ on:
     types:
       - closed # PR关闭或合并时触发
 
-permissions:
-  id-token: write  # Required for OIDC
-  contents: read
-
 jobs:
   publish:
     # 仅当 PR 合并时触发
@@ -35,5 +31,5 @@ jobs:
 
       - name: Publish to npm
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish
