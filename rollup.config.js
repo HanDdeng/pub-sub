@@ -12,14 +12,14 @@ export default defineConfig({
     {
       dir: "./dist/cjs",
       format: "cjs",
-      sourcemap: false
+      sourcemap: "inline",
       // entryFileNames: "[name].cjs",
       // chunkFileNames: "[name]-[hash].cjs"
     },
 
     {
       dir: "./dist/esm",
-      sourcemap: false
+      sourcemap: "inline",
       // entryFileNames: "[name].js",
       // chunkFileNames: "[name]-[hash].js"
     },
@@ -28,8 +28,8 @@ export default defineConfig({
       format: "umd",
       name: "hd-pub-sub", // UMD全局变量名
       plugins: [terser()],
-      sourcemap: true
-    }
+      sourcemap: true,
+    },
   ],
   plugins: [
     typescript({
@@ -37,14 +37,14 @@ export default defineConfig({
       outDir: undefined,
       declaration: false,
       declarationMap: false,
-      declarationDir: undefined
+      declarationDir: undefined,
     }),
     // terser(),
     clear({
       targets: ["dist"],
-      watch: true
+      watch: true,
     }),
     resolve(),
-    commonjs()
-  ]
+    commonjs(),
+  ],
 });
