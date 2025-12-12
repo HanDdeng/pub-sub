@@ -60,6 +60,9 @@ const handleLogin = (userId: string, timestamp: Date) => {
 
 pubSub.subscribe('user:login', handleLogin);
 
+// 订阅仅触发一次事件
+pubSub.subscribe('user:login', handleLogin, { once: true });
+
 // 发布事件
 pubSub.publish('user:login', 'user-123', new Date());
 
