@@ -1,23 +1,23 @@
-import { BasePubSub } from "./types";
+import { BasePubSub, Events, SubscribeOptions } from "./types";
 
 const createPubSub = <T extends BasePubSub>() => {
-  const events: Partial<Record<keyof T, T[keyof T][]>> = {}; // 存储所有的事件及其对应的回调函数
+  const events: Events<T> = {}; // 存储所有的事件及其对应的回调函数
 
   // 订阅事件
-  const subscribe = <K extends keyof T>(event: K, listener: T[K]) => {
+  const subscribe = <K extends keyof T>(event: K, listener: T[K], options: SubscribeOptions = { once: false }) => {
     // 如果事件不存在，创建一个空数组
     if (!events[event]) {
       events[event] = [];
     }
 
     // 判断监听器是否已经存在
-    if (events[event].includes(listener)) {
+    if (events[event].find(item => item.listener === listener)) {
       console.warn(`监听器已经存在: ${String(event)}`);
       return;
     }
 
     // 将订阅的监听函数推入该事件的队列
-    events[event].push(listener);
+    events[event].push({ listener, options });
   };
 
   /**
@@ -40,9 +40,7 @@ const createPubSub = <T extends BasePubSub>() => {
 
     if (listener) {
       // 过滤掉要取消的监听器
-      events[event] = events[event].filter(
-        currentListener => currentListener !== listener
-      );
+      events[event] = events[event].filter(eventItem => eventItem.listener !== listener);
     } else {
       // 如果不传 listener，取消该事件的所有监听器
       delete events[event];
@@ -50,24 +48,26 @@ const createPubSub = <T extends BasePubSub>() => {
   };
 
   // 发布事件
-  const publish = async <K extends keyof T>(
-    event: K,
-    ...args: Parameters<T[K]>
-  ) => {
+  const publish = async <K extends keyof T>(event: K, ...args: Parameters<T[K]>) => {
     // 如果事件没有订阅者，直接返回
     if (!events[event]) return;
 
     // 执行所有订阅该事件的监听器，传递参数
-    events[event].forEach(listener => {
+    events[event].forEach(eventItem => {
       try {
-        setTimeout(() => listener(...args), 0);
+        setTimeout(() => {
+          eventItem.listener(...args);
+          if (eventItem.options.once) {
+            unsubscribe(event, eventItem.listener);
+          }
+        }, 0);
       } catch (e) {
         console.error(`监听器错误: ${String(event)}`, e);
       }
     });
   };
 
-  return { subscribe, unsubscribe, publish };
+  return { subscribe, unsubscribe, publish, events };
 };
 
 export default createPubSub;
