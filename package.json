@@ -1,6 +1,6 @@
 {
   "name": "hd-pub-sub",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "unpkg": "dist/index.min.js",
