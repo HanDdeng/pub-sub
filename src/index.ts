@@ -1,6 +1,6 @@
-import { BasePubSub, Events, SubscribeOptions } from "./types";
+import { BasePubSub, Events, PubSub, SubscribeOptions } from "./types";
 
-const createPubSub = <T extends BasePubSub>() => {
+const createPubSub = <T extends BasePubSub>(): PubSub<T> => {
   const events: Events<T> = {}; // 存储所有的事件及其对应的回调函数
 
   // 订阅事件
