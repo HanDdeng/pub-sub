@@ -70,4 +70,6 @@ const createPubSub = <T extends BasePubSub>(): PubSub<T> => {
   return { subscribe, unsubscribe, publish, events };
 };
 
+export * from "./types";
+
 export default createPubSub;
